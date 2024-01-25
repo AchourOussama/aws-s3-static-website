@@ -1,1 +1,11 @@
 README-Documentation.md
+
+### Terraform ###
+
+# Local .terraform directories
+**/.terraform/**
+**/.terraform
+# .tfstate files
+**/*.tfstate
+*.tfstate.*
+**/.terraform.lock.hcl
