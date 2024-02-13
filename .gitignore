@@ -9,3 +9,6 @@ README-Documentation.md
 **/*.tfstate
 *.tfstate.*
 **/.terraform.lock.hcl
+
+# imported module 
+**/terraform/
