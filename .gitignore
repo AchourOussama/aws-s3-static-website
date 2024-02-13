@@ -5,12 +5,14 @@ README-Documentation.md
 # Local .terraform directories
 **/.terraform/**
 **/.terraform
+
 # .tfstate files
 **/*.tfstate
 *.tfstate.*
 **/.terraform.lock.hcl
 
 # imported module 
-**/terraform/
+frontend/terraform
+frontend/terraform/*
 # website 
 frontend/website/node_modules/
