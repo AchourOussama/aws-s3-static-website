@@ -12,3 +12,5 @@ README-Documentation.md
 
 # imported module 
 **/terraform/
+# website 
+frontend/website/node_modules/
