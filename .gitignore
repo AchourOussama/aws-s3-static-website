@@ -16,3 +16,5 @@ frontend/terraform
 frontend/terraform/*
 # website 
 frontend/website/node_modules/
+frontend/website/package-lock.json
+
