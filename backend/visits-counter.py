@@ -6,15 +6,7 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('website-visits-table')
 
 def lambda_handler(event, context):
-    # print("hello world")
-    # return "hello"
-    # return {
-    #     'statusCode': 200,
-    #     'headers': {
-    #         'Content-Type': 'application/json',
-    #     },
-    #     'body': 'Hello, World!',
-    # }
+    
     http_method = event['httpMethod']
 
     if http_method == 'POST':
