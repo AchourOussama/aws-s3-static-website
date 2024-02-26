@@ -170,3 +170,22 @@ resource "aws_apigatewayv2_stage" "visits" {
   api_id = aws_apigatewayv2_api.visits.id
   name   = "prod"
 }
+
+resource "aws_apigatewayv2_deployment" "visits" {
+  api_id = aws_apigatewayv2_api.visits.id
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_apigatewayv2_integration.lambda_get_handler.id,
+      aws_apigatewayv2_integration.lambda_post_handler.id,
+      aws_apigatewayv2_route.get_handler.id,
+      aws_apigatewayv2_route.post_handler.id,
+    
+  ]))}
+}
+output "api-url" {
+  value = aws_apigatewayv2_api.visits.api_endpoint
+}
