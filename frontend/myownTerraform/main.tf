@@ -1,3 +1,5 @@
+# S3 bucket
+
 resource "aws_s3_bucket" "website" {
   bucket = "ouss-website-bucket"
 
@@ -81,3 +83,4 @@ data "aws_iam_policy_document" "website" {
     ]
   }
 }
+
