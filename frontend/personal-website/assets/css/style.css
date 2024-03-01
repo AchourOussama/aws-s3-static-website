@@ -604,7 +604,7 @@ section {
 }
 
 .about .image {
-  background: url("../img/me.jpg") center center no-repeat;
+  background: url("../img/personal/personal-insat.jpg") center center no-repeat;
   background-size: cover;
   min-height: 500px;
 }
@@ -704,6 +704,65 @@ section {
   top: 0;
   background: #fff;
   border: 2px solid #82909c;
+}
+/*--------------------------------------------------------------
+# Experiences with NGO
+--------------------------------------------------------------*/
+.experience {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.experience .row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.experience .experience-item {
+  padding: 0 0 20px 20px;
+  margin-top: -2px;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack the image and details vertically */
+  align-items: center; /* Center items horizontally */
+  text-align: center; /* Center text within each item */
+  margin-bottom: 20px; /* Add spacing between each experience item */
+
+
+}
+
+.experience .organization-logo {
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+  margin-right: 20px;
+  border: 6px solid rgba(255, 255, 255, 0.15);
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.experience-details {
+  flex-grow: 1;
+  padding: 0 0 20px 20px;
+  margin-top: -2px;
+  
+  position: relative;
+}
+
+.organization-title {
+  font-size: 10 px;
+  margin-bottom: 5px;
+}
+
+.job-position {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-family: "Raleway", sans-serif;
+}
+
+.description {
+  color: #444444; /* Adjust as needed */
 }
 
 /*--------------------------------------------------------------
