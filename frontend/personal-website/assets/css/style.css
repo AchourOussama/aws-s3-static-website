@@ -766,6 +766,24 @@ section {
 }
 
 /*--------------------------------------------------------------
+# Technical skills
+--------------------------------------------------------------*/
+.skills{
+
+}
+.skills .skills-category{
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-family: "Raleway", sans-serif;
+}
+.skills .skill{
+  font-size: 1.07rem; 
+  color: rgb(35, 35, 35); 
+  line-height: 1.5;
+
+}
+/*--------------------------------------------------------------
 # My Services
 --------------------------------------------------------------*/
 .services .icon-box {
