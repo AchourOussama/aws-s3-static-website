@@ -19,7 +19,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y awscli
-
+      - name : Show aws s3 cmd 
+        run : | 
+          echo :"aws s3 sync $LOCAL_WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME --delete"
       - name: Deploy to S3
         run: |
           aws s3 sync $LOCAL_WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME --delete
