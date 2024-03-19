@@ -30,6 +30,9 @@ jobs:
       - name : Show aws s3 cmd 
         run : | 
           echo :"aws s3 sync $WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME --delete"
+      - name: Print current directory
+        run: |
+          pwd
 
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.7.0
