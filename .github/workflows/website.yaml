@@ -3,7 +3,9 @@ name: Deploy Website to S3
 on:
   push:
     branches:
-      - main  # Change this to match your main branch name
+      - main 
+    paths:
+      - "frontend/**" # Change this to match your main branch name
 env:
   AWS_REGION : "us-east-1"
   WEBSITE_DIRECTORY: "frontend/personal-website"
