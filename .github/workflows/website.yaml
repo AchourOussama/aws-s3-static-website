@@ -6,7 +6,7 @@ on:
       - main  # Change this to match your main branch name
 env:
   AWS_REGION : "us-east-1"
-  WEBSITE_DIRECTORY: "../../../frontend/personal-website"
+  WEBSITE_DIRECTORY: "frontend/personal-website"
   S3_BUCKET_NAME: "ouss-website-bucket"
   # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
