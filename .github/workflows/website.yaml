@@ -5,7 +5,8 @@ on:
     branches:
       - main 
     paths:
-      - "frontend/**" # Change this to match your main branch name
+      - "frontend/**" 
+      - ".github/workflows/**"
 env:
   AWS_REGION : "us-east-1"
   WEBSITE_DIRECTORY: "frontend/personal-website"
@@ -36,4 +37,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync $WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME         
+          aws s3 sync $WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME --delete        
