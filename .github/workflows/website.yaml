@@ -9,7 +9,7 @@ on:
 env:
   AWS_REGION : "us-east-1"
   WEBSITE_DIRECTORY: "frontend/personal-website"
-  S3_BUCKET_NAME: "ouss-website-bucket"
+  S3_BUCKET_NAME: "oussamaachour.com"
 
 permissions:
   id-token: write   # This is required for requesting the JWT
