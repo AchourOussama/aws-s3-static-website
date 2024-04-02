@@ -1,8 +1,8 @@
-# S3 bucket
+# ---------------------------- S3 bucket----------------------------# 
 
 resource "aws_s3_bucket" "website" {
-  bucket = "ouss-website-bucket"
-
+  bucket = "oussamaachour.com"
+  #force_destroy = true
   tags = {
     Name        = "My bucket"
     Environment = "Dev"
@@ -84,3 +84,17 @@ data "aws_iam_policy_document" "website" {
   }
 }
 
+# ---------------------------- Route 53----------------------------# 
+
+data "aws_route53_zone" "selected" {
+  name         = "oussamaachour.com."
+  private_zone = false
+}
+
+# resource "aws_route53_record" "www" {
+#   zone_id = data.aws_route53_zone.selected.zone_id
+#   name    = "www.${data.aws_route53_zone.selected.name}"
+#   type    = "A"
+#   ttl     = "300"
+#   records = ["10.0.0.1"]
+# }
