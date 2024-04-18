@@ -1390,8 +1390,9 @@ section {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  background: url("../img/footer-bg.jpg") top center no-repeat;
-  background-size: cover;
+  /* background: url("../img/footer-bg.jpg") top center no-repeat;
+  background-size: cover; */
+  background: rgba(25, 28, 31, 0.8);
   color: #fff;
   font-size: 14px;
   text-align: center;
@@ -1418,7 +1419,7 @@ section {
   font-weight: 700;
   color: #fff;
   position: relative;
-  font-family: "Satisfy", serif;
+  /* font-family: "Satisfy", serif; */
   padding: 0;
   margin: 0 0 15px 0;
 }
