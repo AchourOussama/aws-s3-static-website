@@ -130,6 +130,8 @@ data "aws_acm_certificate" "cert" {
 output "website_url"{
   value="https://${var.domain_name}"
 }
+
+
 # ---------------------------- CloudFront----------------------------# 
 
 locals {
