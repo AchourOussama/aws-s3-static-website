@@ -9,7 +9,7 @@ on:
       - ".github/workflows/**"
 env:
   AWS_REGION : "us-east-1"
-  WEBSITE_DIRECTORY: "frontend/personal-website"
+  WEBSITE_DIRECTORY: "frontend/website"
   S3_BUCKET_NAME: "oussamaachour.com"
 
 permissions:
