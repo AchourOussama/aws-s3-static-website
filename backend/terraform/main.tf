@@ -2,7 +2,7 @@
 
 resource "aws_lambda_function" "visits-counter" {
   
-  filename      = "visits-counter.zip"
+  filename      = "../visits-counter.zip"
   function_name = "visits-counter"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "visits-counter.lambda_handler"
@@ -16,8 +16,8 @@ resource "aws_lambda_function" "visits-counter" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "visits-counter.py"
-  output_path = "visits-counter.zip"
+  source_file = "../visits-counter.py"
+  output_path = "../visits-counter.zip"
 }
 
 # Lambda assume role 
@@ -168,6 +168,7 @@ resource "aws_lambda_permission" "api_gw" {
 
 resource "aws_apigatewayv2_stage" "visits" {
   api_id = aws_apigatewayv2_api.visits.id
+  deployment_id = aws_apigatewayv2_deployment.visits.id
   name   = "prod"
 }
 
@@ -186,6 +187,17 @@ resource "aws_apigatewayv2_deployment" "visits" {
     
   ]))}
 }
-output "api-url" {
-  value = aws_apigatewayv2_api.visits.api_endpoint
+output "api_url" {
+  value = aws_apigatewayv2_stage.visits.invoke_url
+  
 }
+
+# locals {
+#   api_url = aws_apigatewayv2_api.visits.api_endpoint
+# }
+# resource "local_file" "generated_js_script" {
+#   filename = "visitors.js"
+#   content  = templatefile("/home/oussamaachour/e-learning/aws/static website s3/frontend/personal-website/visitors.js", {
+#     api_url = local.api_url
+#   })
+# }
