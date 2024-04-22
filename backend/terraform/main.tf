@@ -1,7 +1,8 @@
 # ----------------------------lambda function----------------------------# 
 
+
 resource "aws_lambda_function" "visits-counter" {
-  
+
   filename      = "../visits-counter.zip"
   function_name = "visits-counter"
   role          = aws_iam_role.iam_for_lambda.arn
@@ -11,7 +12,7 @@ resource "aws_lambda_function" "visits-counter" {
 
   runtime = "python3.10"
 
-  depends_on = [ aws_cloudwatch_log_group.visits-counter ]
+  depends_on = [aws_cloudwatch_log_group.visits-counter]
 }
 
 data "archive_file" "lambda" {
@@ -29,18 +30,17 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "aws_iam_policy_document" "lambda_policy" {
   statement {
-    sid = "AssumeRole"
+    sid    = "AssumeRole"
     effect = "Allow"
 
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
-    
+
     actions = ["sts:AssumeRole"]
   }
-  }
- 
+}
 
 
 
@@ -66,12 +66,12 @@ data "aws_iam_policy_document" "visits-counter" {
   }
   statement {
     effect = "Allow"
-    actions = [ 
-         "dynamodb:GetItem",
-         "dynamodb:PutItem",
-         "dynamodb:UpdateItem"
-     ]
-     resources = [ "arn:aws:dynamodb:*:*:table/${aws_dynamodb_table_item.visits-item.table_name}"]
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem"
+    ]
+    resources = ["arn:aws:dynamodb:*:*:table/${aws_dynamodb_table_item.visits-item.table_name}"]
   }
 }
 
@@ -87,13 +87,17 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
   policy_arn = aws_iam_policy.visits-counter.arn
 }
 
+
+
 # ----------------------------Dynamo DB----------------------------# 
 
+
+
 resource "aws_dynamodb_table" "website-visits-table" {
-  name             = "website-visits-table"
-  hash_key         = var.hash_key
-  billing_mode     = "PAY_PER_REQUEST"
-  stream_enabled   = false
+  name           = "website-visits-table"
+  hash_key       = var.hash_key
+  billing_mode   = "PAY_PER_REQUEST"
+  stream_enabled = false
   #stream_view_type = "NEW_AND_OLD_IMAGES"
 
   attribute {
@@ -114,17 +118,15 @@ resource "aws_dynamodb_table_item" "visits-item" {
     "count": {"N": "15"}
   }
   ITEM
-  
-  # item {
-  #   var.hash_key= {N: 10}
-  # }
-  
+
 }
 
-# ----------------------------api gateway----------------------------# 
+
+
+# ----------------------------api-gateway----------------------------# 
 
 # The type of the api is : http   
- 
+
 resource "aws_apigatewayv2_api" "visits" {
   name          = "website-visits-api"
   protocol_type = "HTTP"
@@ -167,9 +169,9 @@ resource "aws_lambda_permission" "api_gw" {
 }
 
 resource "aws_apigatewayv2_stage" "visits" {
-  api_id = aws_apigatewayv2_api.visits.id
+  api_id        = aws_apigatewayv2_api.visits.id
   deployment_id = aws_apigatewayv2_deployment.visits.id
-  name   = "prod"
+  name          = "prod"
 }
 
 resource "aws_apigatewayv2_deployment" "visits" {
@@ -184,13 +186,15 @@ resource "aws_apigatewayv2_deployment" "visits" {
       aws_apigatewayv2_integration.lambda_post_handler.id,
       aws_apigatewayv2_route.get_handler.id,
       aws_apigatewayv2_route.post_handler.id,
-    
-  ]))}
+
+  ])) }
 }
 output "api_url" {
   value = aws_apigatewayv2_stage.visits.invoke_url
-  
+
 }
+
+# This was a try to automate the process of changing the api url in the visits.js script when a new api deployment happens
 
 # locals {
 #   api_url = aws_apigatewayv2_api.visits.api_endpoint
