@@ -1,3 +1,10 @@
+terraform {
+  backend "s3" {
+    bucket = "oussamaachour-tfstate"
+    key    = "backend/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
 # ----------------------------lambda function----------------------------# 
 
 
