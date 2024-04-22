@@ -50,11 +50,11 @@ jobs:
           cd terraform && terraform state list
         working-directory: ./frontend
       
-      # - name: Terraform Plan
-      #   id: init
-      #   run: |
-      #     terraform plan
-      #   working-directory: ./frontend/terraform
+      - name: Terraform Plan
+        id: init
+        run: |
+          terraform plan
+        working-directory: ./frontend/terraform
 
       # - name: Terraform Apply
       #   # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
