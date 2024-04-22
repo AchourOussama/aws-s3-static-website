@@ -5,12 +5,12 @@ on:
     branches:
       - main 
     paths:
-      - "frontend/**" 
-      - ".github/workflows/**"
+      - "frontend/terraform" 
+      - ".github/workflows/terraform.yml"
 env:
   AWS_REGION : "us-east-1"
-  WEBSITE_DIRECTORY: "frontend/website"
-  S3_BUCKET_NAME: "oussamaachour.com"
+  # WEBSITE_DIRECTORY: "frontend/terraform"
+  # S3_BUCKET_NAME: "oussamaachour.com"
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -36,6 +36,19 @@ jobs:
           role-to-assume: arn:aws:iam::328014421429:role/github-actions-website-s3
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Deploy to S3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with: 
+          terraform_version: 1.4.0
+      
+      - name: Terraform Init
+        id: init
         run: |
-          aws s3 sync $WEBSITE_DIRECTORY s3://$S3_BUCKET_NAME --delete        
+          cd terraform && terraform init
+        working-directory: ./frontend
+
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: | 
+          terraform apply -auto-approve -input=false
+        working-directory: ./frontend/terraform
