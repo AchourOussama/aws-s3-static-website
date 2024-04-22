@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "oussamaachour-tfstate"
+    key    = "frontend"
+    region = "us-east-1"
+  }
+}
+
 # ---------------------------- S3 bucket----------------------------# 
 
 
