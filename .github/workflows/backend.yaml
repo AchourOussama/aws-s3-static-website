@@ -44,11 +44,11 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform && terraform init
-        working-directory: ./frontend
+        working-directory: ./backend
       - name: Terraform Show State
         run: |
           cd terraform && terraform state list
-        working-directory: ./frontend
+        working-directory: ./backend
       
       # - name: Terraform Plan
       #   id: init
