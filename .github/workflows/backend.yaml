@@ -1,0 +1,63 @@
+name: Deploy backend aws resources
+
+on:
+  push:
+    branches:
+      - main 
+    paths:
+      - "backend/terraform" 
+      - ".github/workflows/backend.yml"
+env:
+  AWS_REGION : "us-east-1"
+  # WEBSITE_DIRECTORY: "frontend/terraform"
+  # S3_BUCKET_NAME: "oussamaachour.com"
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      #We use an IAM role to connect GitHub Actions to actions in AWS (more secure than storing aws credentials on GitHub, via GitHub Secrets)
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::328014421429:role/github-actions-backend
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with: 
+          terraform_version: 1.4.0
+      
+      - name: Terraform Init
+        run: |
+          cd terraform && terraform init
+        working-directory: ./frontend
+      - name: Terraform Show State
+        run: |
+          cd terraform && terraform state list
+        working-directory: ./frontend
+      
+      # - name: Terraform Plan
+      #   id: init
+      #   run: |
+      #     terraform plan
+      #   working-directory: ./frontend/terraform
+
+      # - name: Terraform Apply
+      #   # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      #   run: | 
+      #     terraform apply -auto-approve -input=false
+      #   working-directory: ./frontend/terraform
