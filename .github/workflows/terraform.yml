@@ -1,4 +1,4 @@
-name: Deploy Website to S3
+name: Deploy frontend aws resources
 
 on:
   push:
@@ -42,10 +42,15 @@ jobs:
           terraform_version: 1.4.0
       
       - name: Terraform Init
-        id: init
         run: |
           cd terraform && terraform init
         working-directory: ./frontend
+      
+      - name: Terraform Plan
+        id: init
+        run: |
+          terraform plan
+        working-directory: ./frontend/terraform
 
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
