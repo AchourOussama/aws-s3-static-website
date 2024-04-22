@@ -1,5 +1,6 @@
 # ---------------------------- S3 bucket----------------------------# 
 
+
 resource "aws_s3_bucket" "website" {
   bucket = var.domain_name
   #force_destroy = true
@@ -7,7 +8,6 @@ resource "aws_s3_bucket" "website" {
     Name        = "My bucket"
     Environment = "Dev"
   }
-  
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
@@ -16,41 +16,29 @@ resource "aws_s3_bucket_website_configuration" "website" {
   index_document {
     suffix = "index.html"
   }
-
-  # error_document {
-  #   key = "error.html"
-  # }
-
-  # routing_rule {
-  #   condition {
-  #     key_prefix_equals = "docs/"
-  #   }
-  #   redirect {
-  #     replace_key_prefix_with = "documents/"
-  #   }
-  # }
 }
+
 output "bucket_url" {
   value = aws_s3_bucket_website_configuration.website.website_endpoint
 }
 
-# enabling bucket public access 
+# Enabling bucket public access 
 # Note : There is still the "Account-level bucket access" , i enabled it from the console
 
 resource "aws_s3_bucket_public_access_block" "website" {
   # provider = aws.main
 
-  bucket                  = aws_s3_bucket.website.id
+  bucket = aws_s3_bucket.website.id
   #ignore_public_acls      = true
   #restrict_public_buckets = true
-  block_public_acls       = true
-  block_public_policy     = true
+  block_public_acls   = true
+  block_public_policy = true
 }
 
-# bucket policy 
+# Bucket policy 
 
 resource "aws_s3_bucket_policy" "website" {
-  
+
   bucket = aws_s3_bucket.website.id
   #policy = data.aws_iam_policy_document.website.json
   policy = data.aws_iam_policy_document.website.json
@@ -68,7 +56,7 @@ data "aws_iam_policy_document" "website" {
       identifiers = [
         "*",
       ]
-    }    
+    }
     #statement ID
     sid = "PublicReadGetObject"
 
@@ -84,20 +72,17 @@ data "aws_iam_policy_document" "website" {
   }
 }
 
+
+
 # ---------------------------- Route 53----------------------------# 
+
+
 
 data "aws_route53_zone" "main" {
   name         = "oussamaachour.com"
   private_zone = false
 }
 
-# resource "aws_route53_record" "www" {
-#   zone_id = data.aws_route53_zone.selected.zone_id
-#   name    = "www.${data.aws_route53_zone.selected.name}"
-#   type    = "A"
-#   ttl     = "300"
-#   records = ["10.0.0.1"]
-# }
 
 resource "aws_route53_record" "root_domain" {
   zone_id = data.aws_route53_zone.main.zone_id
@@ -109,14 +94,19 @@ resource "aws_route53_record" "root_domain" {
     zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
     evaluate_target_health = true
   }
-  depends_on = [ data.aws_route53_zone.main ]
+  depends_on = [data.aws_route53_zone.main]
 }
+
+
+
 # ---------------------------- ACM Certificate----------------------------# 
+
+
 
 resource "aws_acm_certificate" "cert" {
   domain_name       = var.domain_name
   validation_method = "DNS"
-  provider = aws.acm
+  provider          = aws.acm
 
   lifecycle {
     create_before_destroy = true
@@ -127,12 +117,15 @@ data "aws_acm_certificate" "cert" {
   domain   = var.domain_name
   statuses = ["ISSUED"]
 }
-output "website_url"{
-  value="https://${var.domain_name}"
+output "website_url" {
+  value = "https://${var.domain_name}"
 }
 
 
+
 # ---------------------------- CloudFront----------------------------# 
+
+
 
 locals {
   s3_origin_id = "S3-${aws_s3_bucket.website.id}"
@@ -140,30 +133,23 @@ locals {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name              = aws_s3_bucket.website.bucket_domain_name
-    origin_id                = local.s3_origin_id
+    domain_name = aws_s3_bucket.website.bucket_domain_name
+    origin_id   = local.s3_origin_id
   }
 
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
-  
-  # logging_config {
-  #   include_cookies = false
-  #   bucket          = "mylogs.s3.amazonaws.com"
-  #   prefix          = "myprefix"
-  # }
-
   aliases = ["oussamaachour.com"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-    cached_methods   = ["GET", "HEAD","OPTIONS"]
+    cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = local.s3_origin_id
 
     viewer_protocol_policy = "allow-all"
-    
+
     forwarded_values {
       query_string = false
 
@@ -173,8 +159,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  # The costs depend  on the data transfer out to (internet and origin) and number of HTTPs requests 
-  # The price class 
+  # The costs depend on the data transfer out to (internet and origin) and number of HTTPs requests 
+  # The price class defines the geographic regions where cloudfront will defiver the content
   price_class = "PriceClass_All"
 
   restrictions {
@@ -185,11 +171,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    #Note : default certificate could only use the default cloudfront domain name ""
+    #Note : 
+    #Default certificate could only use the default cloudfront domain name ""
+    #Therefore, we create a certificate on our own and use it  
+
     #cloudfront_default_certificate = true
     acm_certificate_arn = data.aws_acm_certificate.cert.arn
     #To know what does it mean
-    ssl_support_method       = "sni-only"
+    ssl_support_method = "sni-only"
 
   }
 
