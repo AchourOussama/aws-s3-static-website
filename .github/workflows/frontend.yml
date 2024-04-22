@@ -6,7 +6,7 @@ on:
       - main 
     paths:
       - "frontend/terraform" 
-      - ".github/workflows/terraform.yml"
+      - ".github/workflows/frontend.yml"
 env:
   AWS_REGION : "us-east-1"
   # WEBSITE_DIRECTORY: "frontend/terraform"
