@@ -24,11 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-
       #We use an IAM role to connect GitHub Actions to actions in AWS (more secure than storing aws credentials on GitHub, via GitHub Secrets)
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.7.0
@@ -45,16 +40,17 @@ jobs:
         run: |
           cd terraform && terraform init
         working-directory: ./backend
+        
       - name: Terraform Show State
         run: |
           cd terraform && terraform state list
         working-directory: ./backend
       
-      # - name: Terraform Plan
-      #   id: init
-      #   run: |
-      #     terraform plan
-      #   working-directory: ./frontend/terraform
+      - name: Terraform Plan
+        id: init
+        run: |
+          terraform plan
+        working-directory: ./frontend/terraform
 
       # - name: Terraform Apply
       #   # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
