@@ -5,8 +5,8 @@ on:
     branches:
       - main 
     paths:
-      - "frontend/website" 
-      - ".github/workflows/website.yaml"
+      - " frontend/website" 
+      - " .github/workflows/website.yaml"
 env:
   AWS_REGION : "us-east-1"
   WEBSITE_DIRECTORY: "frontend/website"
