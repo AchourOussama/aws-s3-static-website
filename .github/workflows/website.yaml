@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main 
-
+    paths:
+      - "frontend/website/**" 
+      - ".github/workflows/website.yaml"
 env:
   AWS_REGION : "us-east-1"
   WEBSITE_DIRECTORY: "frontend/website"
@@ -22,10 +24,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+      # - name: Install AWS CLI
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y awscli
 
       #We use an IAM role to connect GitHub Actions to actions in AWS (more secure than storing aws credentials on GitHub, via GitHub Secrets)
       - name: configure aws credentials
