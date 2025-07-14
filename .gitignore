@@ -21,3 +21,9 @@ frontend/website/package-lock.json
 # Others 
 encountered problems
 check-point
+
+# Infracost
+backend/terraform/.infracost
+
+# Others
+.DS_Store
