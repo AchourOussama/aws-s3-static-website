@@ -198,25 +198,4 @@ resource "aws_apigatewayv2_deployment" "visits" {
 }
 output "api_url" {
   value = aws_apigatewayv2_stage.visits.invoke_url
-
-}
-
-# This was a try to automate the process of changing the api url in the visits.js script when a new api deployment happens
-
-# locals {
-#   api_url = aws_apigatewayv2_api.visits.api_endpoint
-# }
-# resource "local_file" "generated_js_script" {
-#   filename = "visitors.js"
-#   content  = templatefile("/home/oussamaachour/e-learning/aws/static website s3/frontend/personal-website/visitors.js", {
-#     api_url = local.api_url
-#   })
-# }
-resource "aws_ebs_volume" "example" {
-  availability_zone = "us-east-1a"
-  size              = 40
-
-  tags = {
-    Name = "InfraCost-Test"
-  }
 }
